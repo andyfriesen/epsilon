@@ -1,0 +1,23 @@
+import sys
+
+Import('env', 'library')
+
+e = env.Copy()
+
+if sys.platform in ('linux', 'cygwin'):
+    e.Append(LIBPATH=['/usr/X11R6/lib'])
+
+    # GCC is crazy.  The ordering of these libraries is important!
+    e.Append(LIBS=['GL', 'X11'])
+    e.Append(LIBS=library)
+    e.Append(LIBS=['stdc++', 'X11', 'GL-1', 'GLU-1'])
+
+elif sys.platform == 'win32':
+    e.Append(LIBS=['opengl32', 'gdi32'])
+    e.Append(LIBS=library)
+
+e.Append(CPPPATH=['#/src'])
+e.Append(LIBPATH=['#'])
+
+gltest = e.Program('gltest.c')
+Return('gltest')
